@@ -1,0 +1,63 @@
+@import "~bootstrap/scss/bootstrap";
+
+.bnj-navbar {
+    background-color: #CB8F8A !important;
+}
+
+.bnj-navbar-brand {
+    font-family: 'Bangers', cursive;
+    font-size: 32px ;
+    color: #C5CB8A !important;
+    text-shadow: 2px 2px black;
+}
+
+.bnj-navbar-font {
+    font-family: 'Kalam', cursive;
+    font-variant: all-small-caps;
+    font-size: 20px;
+}
+
+.bnj-link-color {
+    color: white !important;
+    text-shadow: 1px 1px black;
+}
+
+.bnj-navbar-icons {
+    display: none;
+}
+
+@media (min-width: 992px) {
+
+    .bnj-navbar-brand {
+        font-size: 48px;
+    }
+
+    .bnj-navbar-font {
+        font-size: 24px;
+    }
+
+    .bnj-navbar-home {
+        display: none;
+    }
+
+    .bnj-nav-item {
+        margin-left: 32px;
+    }
+
+    .bnj-link-color:hover {
+        color: #CB8AA5 !important;
+    }
+
+    .bnj-link-color:active {
+        color: #CBB08A !important;
+    }
+
+    .bnj-navbar-icons {
+        display: block;
+    }
+
+    i {
+        margin-left: 8px;
+    }
+
+}
