@@ -18,4 +18,45 @@ Class WildController extends AbstractController
             'website' => 'Wild Séries',
         ]);
     }
+
+    /**
+     * @Route("/wild/series", name="wild_series")
+     */
+    public function series() : Response
+    {
+        return $this->render('wild/series.html.twig');
+    }
+
+    /**
+     * @Route("/wild/login", name="wild_login")
+     */
+    public function login() : Response
+    {
+        return $this->render('wild/login.html.twig');
+    }
+
+    /**
+     * @Route("/wild/movies", name="wild_movies")
+     */
+    public function movies() : Response
+    {
+        return $this->render('wild/movies.html.twig');
+    }
+
+    /**
+     * @Route("/wild/actors", name="wild_actors")
+     */
+    public function actors() : Response
+    {
+        return $this->render('wild/actors.html.twig');
+    }
+
+    /**
+     * @Route("/wild/categories", name="wild_categories")
+     */
+    public function categories() : Response
+    {
+        return $this->render('wild/categories.html.twig');
+    }
+
 }
