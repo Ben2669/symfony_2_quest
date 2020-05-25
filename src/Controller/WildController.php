@@ -7,10 +7,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/wild", name="wild_")
+ */
 Class WildController extends AbstractController
 {
     /**
-     * @Route("/wild", name="wild_index")
+     * @Route("", name="index")
      */
     public function index() : Response
     {
@@ -20,7 +23,7 @@ Class WildController extends AbstractController
     }
 
     /**
-     * @Route("/wild/series", name="wild_series")
+     * @Route("/series", name="series")
      */
     public function series() : Response
     {
@@ -28,7 +31,7 @@ Class WildController extends AbstractController
     }
 
     /**
-     * @Route("/wild/login", name="wild_login")
+     * @Route("/login", name="login")
      */
     public function login() : Response
     {
@@ -36,7 +39,7 @@ Class WildController extends AbstractController
     }
 
     /**
-     * @Route("/wild/movies", name="wild_movies")
+     * @Route("/movies", name="movies")
      */
     public function movies() : Response
     {
@@ -44,7 +47,7 @@ Class WildController extends AbstractController
     }
 
     /**
-     * @Route("/wild/actors", name="wild_actors")
+     * @Route("/actors", name="actors")
      */
     public function actors() : Response
     {
@@ -52,11 +55,21 @@ Class WildController extends AbstractController
     }
 
     /**
-     * @Route("/wild/categories", name="wild_categories")
+     * @Route("/categories", name="categories")
      */
     public function categories() : Response
     {
         return $this->render('wild/categories.html.twig');
+    }
+
+    /**
+     * @Route("/show/{slug}", requirements={"slug"="^[0-9-a-z]+$"}, defaults={"slug"="Aucune série sélectionnée, veuillez choisir une série"}, name="show")
+     */
+    public function show(string $slug) : Response
+    {
+        $slugArray = explode("-", $slug);
+        $newSlug = ucwords(implode(" ", $slugArray));
+        return $this->render('wild/show.html.twig', ['slug' => $newSlug]);
     }
 
 }
