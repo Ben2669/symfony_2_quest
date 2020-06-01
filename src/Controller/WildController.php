@@ -4,7 +4,9 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\Episode;
 use App\Entity\Program;
+use App\Entity\Season;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -129,5 +131,65 @@ Class WildController extends AbstractController
             'programs' => $programs,
         ]);
     }
+
+    /**
+     * @Route("/program/{programName}", requirements={"categoryName"="^[0-9-a-z]+$"}, name="show_program")
+     */
+    public function showByProgram(string $programName) : Response
+    {
+        if (!$programName) {
+            throw $this
+                ->createNotFoundException('No programName has been sent to find a category in program\'s table .');
+        }
+        $programName = preg_replace(
+            '/-/',
+            ' ', ucwords(trim(strip_tags($programName)), "-")
+        );
+        $program = $this->getDoctrine()
+            ->getRepository(Program::class)
+            ->findOneBy(['title' => $programName]);
+        if (!$program) {
+            throw $this->createNotFoundException(
+                'No category with '.$programName.' name, found in category\'s table.'
+            );
+        }
+        $seasons = $this->getDoctrine()
+            ->getRepository(Season::class)
+            ->findBy(['program' => $program->getId()]);
+
+        return $this->render('wild/program.html.twig', [
+            'program' => $program,
+            'seasons' => $seasons,
+        ]);
+    }
+
+    /**
+     * @Route("/season/{id}", requirements={"id"="^[0-9]+$"}, name="show_season")
+     */
+    public function showBySeason(int $id) : Response
+    {
+        if (!$id) {
+            throw $this
+                ->createNotFoundException('No id has been sent to find a season in season\'s table .');
+        }
+        $season = $this->getDoctrine()
+            ->getRepository(Season::class)
+            ->findOneBy(['id' => $id]);
+        if (!$id) {
+            throw $this->createNotFoundException(
+                'No season with '.$id.' found in season\'s table.'
+            );
+        }
+        $program = $season->getProgram();
+        $episodes = $season->getEpisodes();
+
+        return $this->render('wild/season.html.twig', [
+            'program' => $program,
+            'season' => $season,
+            'episodes' => $episodes
+        ]);
+    }
+
+
 
 }
