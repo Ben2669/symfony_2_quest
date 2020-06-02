@@ -7,6 +7,9 @@ use App\Entity\Category;
 use App\Entity\Episode;
 use App\Entity\Program;
 use App\Entity\Season;
+use App\Form\CategoryType;
+use App\Form\ProgramSearchType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,8 +22,30 @@ Class WildController extends AbstractController
     /**
      * @Route("", name="index")
      */
-    public function index() : Response
+    public function index(Request $request) : Response
     {
+        $form = $this->createForm(
+                    ProgramSearchType::class,
+                    null,
+                    ['method' => \Symfony\Component\HttpFoundation\Request::METHOD_GET]
+        );
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $data = $form->getData();
+        }
+        $category = new Category();
+        $formBis = $this->createForm(
+                        CategoryType::class,
+                        $category,
+                        ['method' => Request::METHOD_GET]
+        );
+        $formBis->handleRequest($request);
+        if ($formBis->isSubmitted() && $formBis->isValid()) {
+            $dataBis = $formBis->getData();
+            $categoryManager = $this->getDoctrine()->getManager();
+            $categoryManager->persist($dataBis);
+            $categoryManager->flush();
+        }
         $programs = $this->getDoctrine()
             ->getRepository(Program::class)
             ->findAll();
@@ -32,8 +57,11 @@ Class WildController extends AbstractController
         }
 
         return $this->render(
-            'wild/index.html.twig',
-            ['programs' => $programs]
+            'wild/index.html.twig', [
+                'programs' => $programs,
+                'form' => $form->createView(),
+                'formBis' => $formBis->createView()
+                ]
         );
     }
 
