@@ -26,6 +26,15 @@
         </tbody>
     </table>
 
+    <strong>Saison :</strong>
+    <ul>
+        {% for season in program.seasons %}
+            <li><a href="{{ path('season_show', {'id': season.id}) }}">Saison {{ season.number }}</a></li>
+        {% else %}
+            <li>Aucune saison pour cette série</li>
+        {% endfor %}
+    </ul>
+
     <strong>Acteur :</strong>
     <ul>
         {% for actor in program.actors %}
